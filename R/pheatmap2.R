@@ -547,7 +547,7 @@ cluster_mat = function(mat, distance, method){
       d = distance
     }
     else{
-      d = dist(mat, method = distance)
+      d = parDist(mat, method = distance)
     }
   }
 
@@ -860,8 +860,8 @@ identity2 = function(x, ...){
 #' pheatmap2(test, annotation_col = annotation_col, labels_row = labels_row)
 #'
 #' # Specifying clustering from distance matrix
-#' drows = dist(test, method = "minkowski")
-#' dcols = dist(t(test), method = "minkowski")
+#' drows = parDist(test, method = "minkowski")
+#' dcols = parDist(t(test), method = "minkowski")
 #' pheatmap2(test, clustering_distance_rows = drows, clustering_distance_cols = dcols)
 #'
 #' # Modify ordering of the clusters using clustering callback option
