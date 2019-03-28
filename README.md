@@ -32,7 +32,7 @@ It uses `fastcluster::hclust` function instead of `base::hclust`. `fastcluster::
     - **manhattan**
     - **canberra**
     - **binary**
-    - **minkowski
+    - **minkowski**
     - geodesic
     - mahalanobis
     - fJaccard
