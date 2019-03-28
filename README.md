@@ -22,9 +22,9 @@ install_github("altintasali/pheatmap2")
 
 1. Runs faster
     1. *Distance matrix calculation*: 
-It uses `parallelDist::parDist` function instead of `base::dist`. `parDist` takes the advantage of all available cores on CPU.
+It uses `parallelDist::parDist` function instead of `stats::dist`. `parDist` takes the advantage of all available cores on CPU.
     2. *Hierarchical clustering*:
-It uses `fastcluster::hclust` function instead of `base::hclust`. `fastcluster::hclust` is show to perform faster hierarchical clustering than `base::hclust`
+It uses `fastcluster::hclust` function instead of `stats::hclust`. `fastcluster::hclust` is show to perform faster hierarchical clustering than `stats::hclust`
 1. Supports more distance measures. Here is a list of distance measures (**bold text** below means also supported by `pheatmap`):
     - **correlation**
     - **euclidean**
