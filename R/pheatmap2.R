@@ -532,12 +532,17 @@ scale_colours = function(mat, col = rainbow(10), breaks = NA, na_col){
   return(matrix(scale_vec_colours(as.vector(mat), col = col, breaks = breaks, na_col = na_col), nrow(mat), ncol(mat), dimnames = list(rownames(mat), colnames(mat))))
 }
 
+hclustMethods <- c("ward.D", "ward.D2", "ward", "single", "complete", "average", "mcquitty", "median", "centroid")
+distMethods <- c("correlation", "euclidean", "maximum", "manhattan", "canberra", "binary", "minkowski",
+                 "geodesic", "mahalanobis", "fJaccard", "bhjattacharyya", "bray", "chord", "divergence",
+                 "dtw", "hellinger", "kullback", "podani", "soergel", "wave", "whittaker")
+
 cluster_mat = function(mat, distance, method){
-  if(!(method %in% c("ward.D", "ward.D2", "ward", "single", "complete", "average", "mcquitty", "median", "centroid"))){
-    stop("clustering method has to one form the list: 'ward', 'ward.D', 'ward.D2', 'single', 'complete', 'average', 'mcquitty', 'median' or 'centroid'.")
+  if(!(method %in% hclustMethods)){
+    stop( paste("clustering method has to one form the list:", paste(hclustMethods, collapse = ", ")) )
   }
-  if(!(distance[1] %in% c("correlation", "euclidean", "maximum", "manhattan", "canberra", "binary", "minkowski")) & class(distance) != "dist"){
-    stop("distance has to be a dissimilarity structure as produced by dist or one measure  form the list: 'correlation', 'euclidean', 'maximum', 'manhattan', 'canberra', 'binary', 'minkowski'")
+  if(!(distance[1] %in% distMethods) & class(distance) != "dist"){
+    stop( paste("distance has to be a dissimilarity structure as produced by dist or one measure  form the list:", paste(distMethods, collapse = ", ")) )
   }
   if(distance[1] == "correlation"){
     d = as.dist(1 - cor(t(mat)))
@@ -704,7 +709,7 @@ identity2 = function(x, ...){
 #' @param cluster_cols boolean values determining if columns should be clustered or \code{hclust} object.
 #' @param clustering_distance_rows distance measure used in clustering rows. Possible
 #' values are \code{"correlation"} for Pearson correlation and all the distances
-#' supported by \code{\link{dist}}, such as \code{"euclidean"}, etc. If the value is none
+#' supported by \code{\link{parallelDist::parDist}}, such as \code{"euclidean"}, etc. If the value is none
 #' of the above it is assumed that a distance matrix is provided.
 #' @param clustering_distance_cols distance measure used in clustering columns. Possible
 #' values the same as for clustering_distance_rows.
