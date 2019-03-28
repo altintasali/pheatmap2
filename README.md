@@ -20,7 +20,6 @@ install_github("altintasali/pheatmap2")
 ## What is more on `pheatmap2`
 `pheatmap2` adds more features to `pheatmap` while keeping its original source code.
 
-`pheatmap2`
 1. Runs faster
     1. *Distance matrix calculation*: 
 It uses `parallelDist::parDist` function instead of `base::dist`. `parDist` takes the advantage of all available cores on CPU.
