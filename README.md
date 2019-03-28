@@ -14,7 +14,7 @@ install_github("altintasali/pheatmap2")
 ```
 
 ## What is `pheatmap`?
-`pheatmap` stands for "Pretty Heatmaps" and it definitely deserves this name. Raivo Kolde, the author of `pheatmap`, did an amazing job and I strongly believe that `pheatmap` is one of the best heatmap tools available. Dave Tang has an amazing blog post about how to exploit the features of pheatmap, so please [check it out](https://davetang.org/muse/2018/05/15/making-a-heatmap-in-r-with-the-pheatmap-package/). 
+`pheatmap` stands for "Pretty Heatmaps" and it definitely deserves its name. Raivo Kolde, the author of `pheatmap`, did an amazing job on heatmap visualization and I strongly believe that `pheatmap` is one of the best heatmap tools available. Dave Tang has a really blog post about how to exploit the features of pheatmap, so please [check it out](https://davetang.org/muse/2018/05/15/making-a-heatmap-in-r-with-the-pheatmap-package/). 
 
 
 ## What is more on `pheatmap2`
