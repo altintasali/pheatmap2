@@ -61,7 +61,7 @@ either the row direction or the column direction, or none. Corresponding values 
 
 \item{clustering_distance_rows}{distance measure used in clustering rows. Possible
 values are \code{"correlation"} for Pearson correlation and all the distances
-supported by \code{\link{dist}}, such as \code{"euclidean"}, etc. If the value is none
+supported by \code{\link{parallelDist::parDist}}, such as \code{"euclidean"}, etc. If the value is none
 of the above it is assumed that a distance matrix is provided.}
 
 \item{clustering_distance_cols}{distance measure used in clustering columns. Possible
