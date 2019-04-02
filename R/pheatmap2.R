@@ -537,7 +537,7 @@ distMethods <- c("correlation", "euclidean", "maximum", "manhattan", "canberra",
                  "geodesic", "mahalanobis", "fJaccard", "bhjattacharyya", "bray", "chord", "divergence",
                  "dtw", "hellinger", "kullback", "podani", "soergel", "wave", "whittaker")
 
-cluster_mat = function(mat, distance, method){
+cluster_mat = function(mat, distance, method, nthread){
   if(!(method %in% hclustMethods)){
     stop( paste("clustering method has to one form the list:", paste(hclustMethods, collapse = ", ")) )
   }
