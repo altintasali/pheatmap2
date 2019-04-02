@@ -971,7 +971,7 @@ pheatmap2 = function(mat, color = colorRampPalette(rev(brewer.pal(n = 7, name = 
     if(class(cluster_cols) == "hclust"){
       tree_col = cluster_cols
     } else {
-      tree_col = cluster_mat(t(mat), distance = clustering_distance_cols, method = clustering_method)
+      tree_col = cluster_mat(t(mat), distance = clustering_distance_cols, method = clustering_method, nthread = nthread)
       tree_col = clustering_callback(tree_col, t(mat))
     }
     mat = mat[, tree_col$order, drop = FALSE]
