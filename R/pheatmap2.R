@@ -537,7 +537,7 @@ distMethods <- c("correlation", "euclidean", "maximum", "manhattan", "canberra",
                  "geodesic", "mahalanobis", "fJaccard", "bhjattacharyya", "bray", "chord", "divergence",
                  "dtw", "hellinger", "kullback", "podani", "soergel", "wave", "whittaker")
 
-cluster_mat = function(mat, distance, method, nthread){
+cluster_mat = function(mat, distance, method, thread){
   if(!(method %in% hclustMethods)){
     stop( paste("clustering method has to one form the list:", paste(hclustMethods, collapse = ", ")) )
   }
@@ -552,7 +552,7 @@ cluster_mat = function(mat, distance, method, nthread){
       d = distance
     }
     else{
-      d = parDist(mat, method = distance, threads = nthread)
+      d = parDist(mat, method = distance, threads = thread)
     }
   }
 
@@ -949,7 +949,7 @@ pheatmap2 = function(mat, color = colorRampPalette(rev(brewer.pal(n = 7, name = 
     if(class(cluster_rows) == "hclust"){
       tree_row = cluster_rows
     } else {
-      tree_row = cluster_mat(mat, distance = clustering_distance_rows, method = clustering_method, nthread = nthread)
+      tree_row = cluster_mat(mat, distance = clustering_distance_rows, method = clustering_method, thread = nthread)
       tree_row = clustering_callback(tree_row, mat)
     }
     mat = mat[tree_row$order, , drop = FALSE]
@@ -971,7 +971,7 @@ pheatmap2 = function(mat, color = colorRampPalette(rev(brewer.pal(n = 7, name = 
     if(class(cluster_cols) == "hclust"){
       tree_col = cluster_cols
     } else {
-      tree_col = cluster_mat(t(mat), distance = clustering_distance_cols, method = clustering_method, nthread = nthread)
+      tree_col = cluster_mat(t(mat), distance = clustering_distance_cols, method = clustering_method, thread = nthread)
       tree_col = clustering_callback(tree_col, t(mat))
     }
     mat = mat[, tree_col$order, drop = FALSE]
