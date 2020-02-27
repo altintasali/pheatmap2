@@ -4,28 +4,59 @@
 \alias{pheatmap2}
 \title{A function to draw clustered heatmaps.}
 \usage{
-pheatmap2(mat, color = colorRampPalette(rev(brewer.pal(n = 7, name =
-  "RdYlBu")))(100), kmeans_k = NA, breaks = NA,
-  border_color = "grey60", cellwidth = NA, cellheight = NA,
-  scale = "none", cluster_rows = TRUE, cluster_cols = TRUE,
+pheatmap2(
+  mat,
+  color = colorRampPalette(rev(brewer.pal(n = 7, name = "RdYlBu")))(100),
+  kmeans_k = NA,
+  breaks = NA,
+  border_color = "grey60",
+  cellwidth = NA,
+  cellheight = NA,
+  scale = "none",
+  cluster_rows = TRUE,
+  cluster_cols = TRUE,
   clustering_distance_rows = "euclidean",
   clustering_distance_cols = "euclidean",
-  clustering_method = "complete", clustering_callback = identity2,
-  cutree_rows = NA, cutree_cols = NA,
-  treeheight_row = ifelse((class(cluster_rows) == "hclust") ||
-  cluster_rows, 50, 0), treeheight_col = ifelse((class(cluster_cols) ==
-  "hclust") || cluster_cols, 50, 0), legend = TRUE, legend_breaks = NA,
-  legend_labels = NA, annotation_row = NA, annotation_col = NA,
-  annotation = NA, annotation_colors = NA, annotation_legend = TRUE,
-  annotation_names_row = TRUE, annotation_names_col = TRUE,
-  drop_levels = TRUE, show_rownames = T, show_colnames = T,
-  main = NA, fontsize = 10, fontsize_row = fontsize,
-  fontsize_col = fontsize, angle_col = c("270", "0", "45", "90",
-  "315"), display_numbers = F, number_format = "\%.2f",
-  number_color = "grey30", fontsize_number = 0.8 * fontsize,
-  gaps_row = NULL, gaps_col = NULL, labels_row = NULL,
-  labels_col = NULL, filename = NA, width = NA, height = NA,
-  silent = FALSE, na_col = "#DDDDDD", nthread = NULL, ...)
+  clustering_method = "complete",
+  clustering_callback = identity2,
+  cutree_rows = NA,
+  cutree_cols = NA,
+  treeheight_row = ifelse((class(cluster_rows) == "hclust") || cluster_rows, 50, 0),
+  treeheight_col = ifelse((class(cluster_cols) == "hclust") || cluster_cols, 50, 0),
+  legend = TRUE,
+  legend_breaks = NA,
+  legend_labels = NA,
+  annotation_row = NA,
+  annotation_col = NA,
+  annotation = NA,
+  annotation_colors = NA,
+  annotation_legend = TRUE,
+  annotation_names_row = TRUE,
+  annotation_names_col = TRUE,
+  drop_levels = TRUE,
+  show_rownames = T,
+  show_colnames = T,
+  main = NA,
+  fontsize = 10,
+  fontsize_row = fontsize,
+  fontsize_col = fontsize,
+  angle_col = c("270", "0", "45", "90", "315"),
+  display_numbers = F,
+  number_format = "\%.2f",
+  number_color = "grey30",
+  fontsize_number = 0.8 * fontsize,
+  gaps_row = NULL,
+  gaps_col = NULL,
+  labels_row = NULL,
+  labels_col = NULL,
+  filename = NA,
+  width = NA,
+  height = NA,
+  silent = FALSE,
+  na_col = "#DDDDDD",
+  nthread = NULL,
+  ...
+)
 }
 \arguments{
 \item{mat}{numeric matrix of the values to be plotted.}
@@ -172,6 +203,8 @@ calculated so that the plot would fit there, unless specified otherwise.}
 
 \item{\dots}{graphical parameters for the text used in plot. Parameters passed to
 \code{\link{grid.text}}, see \code{\link{gpar}}.}
+
+\item{vertical_legend}{draw annotation legend vertically (right side) [default]. If \code{FALSE} the legend will be drawn horizontally at the bottom.}
 }
 \value{
 Invisibly a \code{pheatmap2} object that is a list with components
@@ -214,7 +247,7 @@ pheatmap2(test, legend = FALSE)
 
 # Show text within cells
 pheatmap2(test, display_numbers = TRUE)
-pheatmap2(test, display_numbers = TRUE, number_format = "\\\%.1e")
+pheatmap2(test, display_numbers = TRUE, number_format = "\\%.1e")
 pheatmap2(test, display_numbers = matrix(ifelse(test > 5, "*", ""), nrow(test)))
 pheatmap2(test, cluster_row = FALSE, legend_breaks = -1:4, legend_labels = c("0",
 "1e-4", "1e-3", "1e-2", "1e-1", "1"))
