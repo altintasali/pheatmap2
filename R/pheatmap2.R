@@ -329,39 +329,116 @@ draw_annotation_names = function(annotations, fontsize, horizontal, hjust_col, v
   return(res)
 }
 
-draw_annotation_legend = function(annotation, annotation_colors, border_color, ...){
-  y = unit(1, "npc")
-  text_height = unit(1, "grobheight", textGrob("FGH", gp = gpar(...)))
+draw_annotation_legend = function(annotation, annotation_colors, border_color, vertical = TRUE, ...){
+  if(vertical){
+    y = unit(1, "npc")
+    text_height = unit(1, "grobheight", textGrob("FGH", gp = gpar(...)))
 
-  res = gList()
-  for(i in names(annotation)){
-    res[[i]] = textGrob(i, x = 0, y = y, vjust = 1, hjust = 0, gp = gpar(fontface = "bold", ...))
+    res = gList()
+    for(i in names(annotation)){
+      res[[i]] = textGrob(i, x = 0, y = y, vjust = 1, hjust = 0, gp = gpar(fontface = "bold", ...))
 
-    y = y - 1.5 * text_height
-    if(is.character(annotation[[i]]) | is.factor(annotation[[i]])){
-      n = length(annotation_colors[[i]])
-      yy = y - (1:n - 1) * 2 * text_height
+      y = y - 1.5 * text_height
+      if(is.character(annotation[[i]]) | is.factor(annotation[[i]])){
+        n = length(annotation_colors[[i]])
+        yy = y - (1:n - 1) * 2 * text_height
 
-      res[[paste(i, "r")]] = rectGrob(x = unit(0, "npc"), y = yy, hjust = 0, vjust = 1, height = 2 * text_height, width = 2 * text_height, gp = gpar(col = border_color, fill = annotation_colors[[i]]))
-      res[[paste(i, "t")]] = textGrob(names(annotation_colors[[i]]), x = text_height * 2.4, y = yy - text_height, hjust = 0, vjust = 0.5, gp = gpar(...))
+        res[[paste(i, "r")]] = rectGrob(x = unit(0, "npc"), y = yy, hjust = 0, vjust = 1, height = 2 * text_height, width = 2 * text_height, gp = gpar(col = border_color, fill = annotation_colors[[i]]))
+        res[[paste(i, "t")]] = textGrob(names(annotation_colors[[i]]), x = text_height * 2.4, y = yy - text_height, hjust = 0, vjust = 0.5, gp = gpar(...))
 
-      y = y - n * 2 * text_height
+        y = y - n * 2 * text_height
 
+      }
+      else{
+        yy = y - 8 * text_height + seq(0, 1, 0.25)[-1] * 8 * text_height
+        h = 8 * text_height * 0.25
+
+        res[[paste(i, "r")]] = rectGrob(x = unit(0, "npc"), y = yy, hjust = 0, vjust = 1, height = h, width = 2 * text_height, gp = gpar(col = NA, fill = colorRampPalette(annotation_colors[[i]])(4)))
+        res[[paste(i, "r2")]] = rectGrob(x = unit(0, "npc"), y = y, hjust = 0, vjust = 1, height = 8 * text_height, width = 2 * text_height, gp = gpar(col = border_color, fill = NA))
+
+        txt = rev(range(grid.pretty(range(annotation[[i]], na.rm = TRUE))))
+        yy = y - c(1, 7) * text_height
+        res[[paste(i, "t")]]  = textGrob(txt, x = text_height * 2.4, y = yy, hjust = 0, vjust = 0.5, gp = gpar(...))
+        y = y - 8 * text_height
+      }
+      y = y - 1.5 * text_height
     }
-    else{
-      yy = y - 8 * text_height + seq(0, 1, 0.25)[-1] * 8 * text_height
-      h = 8 * text_height * 0.25
 
-      res[[paste(i, "r")]] = rectGrob(x = unit(0, "npc"), y = yy, hjust = 0, vjust = 1, height = h, width = 2 * text_height, gp = gpar(col = NA, fill = colorRampPalette(annotation_colors[[i]])(4)))
-      res[[paste(i, "r2")]] = rectGrob(x = unit(0, "npc"), y = y, hjust = 0, vjust = 1, height = 8 * text_height, width = 2 * text_height, gp = gpar(col = border_color, fill = NA))
+  }else{
+    x = unit(1, "npc") #TODO: check if necessary
+    y = unit(1, "npc")
+    text_height = unit(1, "grobheight", textGrob("FGH", gp = gpar(...)))
+    text_width = unit(1, "grobwidth", textGrob("FGH", gp = gpar(...))) #TODO: check if necessary
+    res = gList()
 
-      txt = rev(range(grid.pretty(range(annotation[[i]], na.rm = TRUE))))
-      yy = y - c(1, 7) * text_height
-      res[[paste(i, "t")]]  = textGrob(txt, x = text_height * 2.4, y = yy, hjust = 0, vjust = 0.5, gp = gpar(...))
-      y = y - 8 * text_height
+    for(i in names(annotation)){
+      l = grep(i, names(annotation))
+      x0 = (l - 1) * 2.1 * text_width
+      y = unit(1, "npc")
+      y = y
+
+      res[[i]] = textGrob(i, x = x0, y = y, vjust = 1, hjust = 0, gp = gpar(fontface = "bold"))
+
+      y = y - 1.5 * text_height
+      x = x - 1.5 * text_width
+      if(is.character(annotation[[i]]) | is.factor(annotation[[i]])){
+        n = length(unique(annotation[[i]])) #length(annotation_colors[[i]])
+        l = grep(i, names(annotation))
+        yy = y - (1:n - 1) * 2 * text_height
+        xx = (l - 1) * 2.1 * text_width
+
+        res[[paste(i, "r")]] = rectGrob(x = xx,
+                                        y = yy,
+                                        hjust = 0,
+                                        vjust = 1,
+                                        height = 2 * text_height,
+                                        width = 2 * text_height,
+                                        gp = gpar(col = border_color, fill = annotation_colors[[i]]))
+        res[[paste(i, "t")]] = textGrob(names(annotation_colors[[i]]),
+                                        x = xx + text_height * 2.4,
+                                        y = yy - text_height,
+                                        hjust = 0,
+                                        vjust = 0.5)
+
+        y = y - n * 2 * text_height
+
+      }  else{
+        n = length(unique(annotation[[i]])) #length(annotation_colors[[i]])
+        l = grep(i, names(annotation))
+
+        yy = y - 8 * text_height + seq(0, 1, 0.25)[-1] * 8 * text_height
+        xx = (l - 1) * 2.1 * text_width
+        h = 8 * text_height * 0.25
+
+        res[[paste(i, "r")]] = rectGrob(x = xx, #x = unit(0, "npc"),
+                                        y = yy,
+                                        hjust = 0,
+                                        vjust = 1,
+                                        height = h,
+                                        width = 2 * text_height,
+                                        gp = gpar(col = NA, fill = colorRampPalette(annotation_colors[[i]])(4)))
+        res[[paste(i, "r2")]] = rectGrob(x = xx, #x = unit(0, "npc"),
+                                         y = y,
+                                         hjust = 0,
+                                         vjust = 1,
+                                         height = 8 * text_height,
+                                         width = 2 * text_height,
+                                         gp = gpar(col = border_color, fill = NA))
+
+        txt = rev(range(grid.pretty(range(annotation[[i]], na.rm = TRUE))))
+        yy = y - c(1, 7) * text_height
+        res[[paste(i, "t")]]  = textGrob(txt,
+                                         x = xx + text_height * 2.4,
+                                         y = yy - text_height * 0.5,
+                                         hjust = 0,
+                                         vjust = 0)
+        y = y - 8 * text_height
+      }
+      y = y - 1.5 * text_height
     }
-    y = y - 1.5 * text_height
+
   }
+
 
   res = gTree(children = res)
 
@@ -492,10 +569,12 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight, tree_col, 
   annotation = annotation[unlist(lapply(annotation, function(x) !is.na2(x)))]
 
   if(length(annotation) > 0 & annotation_legend){
-    elem = draw_annotation_legend(annotation, annotation_colors, border_color, fontsize = fontsize, ...)
+    elem = draw_annotation_legend(annotation, annotation_colors, border_color, fontsize = fontsize, vertical = TRUE, ...)
 
     t = ifelse(is.null(labels_row), 4, 3)
+    #t = ifelse(is.null(labels_row), 1, 0) #TODO:experimental now
     res = gtable_add_grob(res, elem, t = t, l = 6, b = 5, clip = "off", name = "annotation_legend")
+    #res = gtable_add_grob(res, elem, t = t, l = 0, b = 0, clip = "off", name = "annotation_legend") #TODO:experimental now
   }
 
   # Draw legend
@@ -503,7 +582,9 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight, tree_col, 
     elem = draw_legend(color, breaks, legend, fontsize = fontsize, ...)
 
     t = ifelse(is.null(labels_row), 4, 3)
+    #t = ifelse(is.null(labels_row), 1, 0) #TODO:experimental now
     res = gtable_add_grob(res, elem, t = t, l = 5, b = 5, clip = "off", name = "legend")
+    #res = gtable_add_grob(res, elem, t = t, l = 0, b = 0, clip = "off", name = "legend") #TODO:experimental now
   }
 
   return(res)
@@ -778,6 +859,7 @@ identity2 = function(x, ...){
 #' @param silent do not draw the plot (useful when using the gtable output)
 #' @param na_col specify the color of the NA cell in the matrix.
 #' @param nthread number of cpu threads for calculating a distance matrix. Default (NULL) is the maximum amount of cpu threads available on the system.
+#' @param vertical_legend draw annotation legend vertically (right side) [default]. If \code{FALSE} the legend will be drawn horizontally at the bottom.
 #' @param \dots graphical parameters for the text used in plot. Parameters passed to
 #' \code{\link{grid.text}}, see \code{\link{gpar}}.
 #'
@@ -888,7 +970,7 @@ identity2 = function(x, ...){
 #' }
 #'
 #' @export
-pheatmap2 = function(mat, color = colorRampPalette(rev(brewer.pal(n = 7, name = "RdYlBu")))(100), kmeans_k = NA, breaks = NA, border_color = "grey60", cellwidth = NA, cellheight = NA, scale = "none", cluster_rows = TRUE, cluster_cols = TRUE, clustering_distance_rows = "euclidean", clustering_distance_cols = "euclidean", clustering_method = "complete", clustering_callback = identity2, cutree_rows = NA, cutree_cols = NA,  treeheight_row = ifelse((class(cluster_rows) == "hclust") || cluster_rows, 50, 0), treeheight_col = ifelse((class(cluster_cols) == "hclust") || cluster_cols, 50, 0), legend = TRUE, legend_breaks = NA, legend_labels = NA, annotation_row = NA, annotation_col = NA, annotation = NA, annotation_colors = NA, annotation_legend = TRUE, annotation_names_row = TRUE, annotation_names_col = TRUE, drop_levels = TRUE, show_rownames = T, show_colnames = T, main = NA, fontsize = 10, fontsize_row = fontsize, fontsize_col = fontsize, angle_col = c("270", "0", "45", "90", "315"), display_numbers = F, number_format = "%.2f", number_color = "grey30", fontsize_number = 0.8 * fontsize, gaps_row = NULL, gaps_col = NULL, labels_row = NULL, labels_col = NULL, filename = NA, width = NA, height = NA, silent = FALSE, na_col = "#DDDDDD", nthread = NULL, ...){
+pheatmap2 = function(mat, color = colorRampPalette(rev(brewer.pal(n = 7, name = "RdYlBu")))(100), kmeans_k = NA, breaks = NA, border_color = "grey60", cellwidth = NA, cellheight = NA, scale = "none", cluster_rows = TRUE, cluster_cols = TRUE, clustering_distance_rows = "euclidean", clustering_distance_cols = "euclidean", clustering_method = "complete", clustering_callback = identity2, cutree_rows = NA, cutree_cols = NA,  treeheight_row = ifelse((class(cluster_rows) == "hclust") || cluster_rows, 50, 0), treeheight_col = ifelse((class(cluster_cols) == "hclust") || cluster_cols, 50, 0), legend = TRUE, legend_breaks = NA, legend_labels = NA, annotation_row = NA, annotation_col = NA, annotation = NA, annotation_colors = NA, annotation_legend = TRUE, annotation_names_row = TRUE, annotation_names_col = TRUE, drop_levels = TRUE, show_rownames = T, show_colnames = T, main = NA, fontsize = 10, fontsize_row = fontsize, fontsize_col = fontsize, angle_col = c("270", "0", "45", "90", "315"), display_numbers = F, number_format = "%.2f", number_color = "grey30", fontsize_number = 0.8 * fontsize, gaps_row = NULL, gaps_col = NULL, labels_row = NULL, labels_col = NULL, filename = NA, width = NA, height = NA, silent = FALSE, na_col = "#DDDDDD", nthread = NULL,  ...){
 
   # Set labels
   if(is.null(labels_row)){

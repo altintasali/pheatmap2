@@ -9,5 +9,5 @@ Description: Runs faster than pheatmap
 License: MIT
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2
 Depends: grid, RColorBrewer, scales, gtable, stats, grDevices, graphics, parallelDist, fastcluster
