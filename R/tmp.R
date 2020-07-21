@@ -70,10 +70,10 @@ res = gList()
 annotation <- annotation_col
 annotation$Time <- as.factor(annotation$Time)
 annotation_colors = ann_colors
-i <- names(annotation)[3]
+i <- names(annotation)[2]
 #-------------------------------
 for(i in names(annotation)){
-  l = grep(i, names(annotation))
+  l = grep(paste0("^",i,"$"), names(annotation))
   x0 = (l - 1) * 2.1 * text_width
   y = unit(1, "npc")
   y = y
@@ -84,7 +84,7 @@ for(i in names(annotation)){
   x = x - 1.5 * text_width
   if(is.character(annotation[[i]]) | is.factor(annotation[[i]])){
     n = length(unique(annotation[[i]])) #length(annotation_colors[[i]])
-    l = grep(i, names(annotation))
+    l = grep(paste0("^",i,"$"), names(annotation))
     yy = y - (1:n - 1) * 2 * text_height
     xx = (l - 1) * 2.1 * text_width
 
@@ -105,7 +105,7 @@ for(i in names(annotation)){
 
   }  else{
     n = length(unique(annotation[[i]])) #length(annotation_colors[[i]])
-    l = grep(i, names(annotation))
+    l = grep(paste0("^",i,"$"), names(annotation))
 
     yy = y - 8 * text_height + seq(0, 1, 0.25)[-1] * 8 * text_height
     xx = (l - 1) * 2.1 * text_width
