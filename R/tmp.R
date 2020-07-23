@@ -20,8 +20,8 @@ annotation_col = data.frame(
   CellType = factor(rep(c("CT1", "CT2"), 5)),
   Time = factor(paste0("X", 1:5)),
   time = 1:5,
+  Ali2 = factor(rep(c("abdurrahman", "lahavlevelaguvveteillabilla"), 5)),
   Ali = factor(rep(c("ali", "veli"), 5)),
-  Ali2 = factor(rep(c("deli", "veli"), 5)),
   Time2 = factor(paste0("X", 1:10))
 
 )
@@ -38,7 +38,7 @@ ann_colors = list(
   CellType = c(CT1 = "#1B9E77", CT2 = "#D95F02"),
   GeneClass = c(Path1 = "#7570B3", Path2 = "#E7298A", Path3 = "#66A61E"),
   Ali = c(ali = "#1B9E77", veli = "#D95F02"),
-  Ali2 = c(deli = "#1B9E77", veli = "#D95F02"),
+  Ali2 = c(abdurrahman = "#1B9E77", lahavlevelaguvveteillabilla = "#D95F02"),
   Time2 =  c(X1 = "#7570B3", X2 = "#E7298A", X3 = "#66A61E", X4 = "#1B9E77", X5 = "#D95F02",
             X6 = "#7570B3", X7 = "#E7298A", X8 = "#66A61E", X9 = "#1B9E77", X10 = "#D95F02")
 )
@@ -70,7 +70,7 @@ res = gList()
 annotation <- annotation_col
 annotation$Time <- as.factor(annotation$Time)
 annotation_colors = ann_colors
-i <- names(annotation)[2]
+i <- names(annotation)[1]
 #-------------------------------
 for(i in names(annotation)){
   l = grep(paste0("^",i,"$"), names(annotation))
