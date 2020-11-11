@@ -48,9 +48,17 @@ ann_colors = list(
 # annotation_colors <- 1:4
 # border_color <- "black"
 grid.newpage()
-grid.draw(draw_annotation_legend(annotation = annotation_col, annotation_colors = ann_colors, border_color = "red"))
+grid.draw(draw_annotation_legend(annotation = annotation_col, annotation_colors = ann_colors, border_color = "red", vertical = F))
 grid.newpage()
 
+
+
+
+longest_break = which.max(nchar(names(legend)))
+longest_break = unit(1.1, "grobwidth", textGrob(as.character(names(legend))[longest_break], gp = do.call(gpar, gp)))
+title_length = unit(1.1, "grobwidth", textGrob("Scale", gp = gpar(fontface = "bold", ...)))
+legend_width = unit(12, "bigpts") + longest_break * 1.2
+legend_width = max(title_length, legend_width)
 
 
 
@@ -63,14 +71,14 @@ border_color <- "black"
 x = unit(1, "npc")
 y = unit(1, "npc")
 text_height = unit(1, "grobheight", textGrob("FGH"))
-text_width = unit(1, "grobwidth", textGrob("FGH"))
+text_width = unit(1, "grobwidth", textGrob("FGHFGHFGH"))
 res = gList()
 
 #-------------------------------
 annotation <- annotation_col
 annotation$Time <- as.factor(annotation$Time)
 annotation_colors = ann_colors
-i <- names(annotation)[1]
+i <- names(annotation)[4]
 #-------------------------------
 for(i in names(annotation)){
   l = grep(paste0("^",i,"$"), names(annotation))
@@ -83,6 +91,12 @@ for(i in names(annotation)){
   y = y - 1.5 * text_height
   x = x - 1.5 * text_width
   if(is.character(annotation[[i]]) | is.factor(annotation[[i]])){
+    # longest_text <- which.max(nchar(names(annotation_colors[[i]])))[1]
+    # #longest_text <- unit(1, "grobwidth", textGrob(as.character(annotation_colors[[i]])[longest_text])) #gp = do.call(gpar, gp)))
+    # #text_width <- longest_text
+    # longest_text <- names(annotation_colors[[i]])[longest_text]
+    # text_width = unit(1, "grobwidth", textGrob(longest_text))
+
     n = length(unique(annotation[[i]])) #length(annotation_colors[[i]])
     l = grep(paste0("^",i,"$"), names(annotation))
     yy = y - (1:n - 1) * 2 * text_height
@@ -95,6 +109,7 @@ for(i in names(annotation)){
                                     height = 2 * text_height,
                                     width = 2 * text_height,
                                     gp = gpar(col = border_color, fill = annotation_colors[[i]]))
+
     res[[paste(i, "t")]] = textGrob(names(annotation_colors[[i]]),
                                     x = xx + text_height * 2.4,
                                     y = yy - text_height,
