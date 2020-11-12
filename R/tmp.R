@@ -1,18 +1,48 @@
 # # Create test matrix
-# test = matrix(rnorm(200), 20, 10)
-# test[1:10, seq(1, 10, 2)] = test[1:10, seq(1, 10, 2)] + 3
-# test[11:20, seq(2, 10, 2)] = test[11:20, seq(2, 10, 2)] + 2
-# test[15:20, seq(2, 10, 2)] = test[15:20, seq(2, 10, 2)] + 4
-# colnames(test) = paste("Test", 1:10, sep = "")
-# rownames(test) = paste("Gene", 1:20, sep = "")
+test = matrix(rnorm(200), 20, 10)
+test[1:10, seq(1, 10, 2)] = test[1:10, seq(1, 10, 2)] + 3
+test[11:20, seq(2, 10, 2)] = test[11:20, seq(2, 10, 2)] + 2
+test[15:20, seq(2, 10, 2)] = test[15:20, seq(2, 10, 2)] + 4
+colnames(test) = paste("Test", 1:10, sep = "")
+rownames(test) = paste("Gene", 1:20, sep = "")
 #
-# # Draw heatmaps
-# pheatmap(test)
-# pheatmap(test, kmeans_k = 2)
-# pheatmap(test, scale = "row", clustering_distance_rows = "correlation")
-# pheatmap(test, color = colorRampPalette(c("navy", "white", "firebrick3"))(50))
-# pheatmap(test, cluster_row = FALSE)
-# pheatmap(test, legend = FALSE)
+# Draw heatmaps
+pheatmap2(test)
+pheatmap2(test, kmeans_k = 2)
+pheatmap2(test, scale = "row", clustering_distance_rows = "correlation")
+pheatmap2(test, color = colorRampPalette(c("navy", "white", "firebrick3"))(50))
+pheatmap2(test, cluster_row = FALSE)
+pheatmap2(test, legend = FALSE)
+
+#Generate annotations for rows and columns
+annotation_col = data.frame(
+  CellType = factor(rep(c("CT1", "CT2"), 5)),
+  Time = 1:5
+)
+rownames(annotation_col) = paste("Test", 1:10, sep = "")
+
+annotation_row = data.frame(
+  GeneClass = factor(rep(c("Path1", "Path2", "Path3"), c(10, 4, 6)))
+)
+rownames(annotation_row) = paste("Gene", 1:20, sep = "")
+
+# Display row and color annotations
+tmp <- pheatmap2(test, annotation_col = annotation_col, vertical_legend = F)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # Generate annotations for rows and columns
@@ -71,7 +101,7 @@ border_color <- "black"
 x = unit(1, "npc")
 y = unit(1, "npc")
 text_height = unit(1, "grobheight", textGrob("FGH"))
-text_width = unit(1, "grobwidth", textGrob("FGHFGHFGH"))
+text_width = unit(1, "grobwidth", textGrob("FGHFF"))
 res = gList()
 
 #-------------------------------
@@ -81,6 +111,13 @@ annotation_colors = ann_colors
 i <- names(annotation)[4]
 #-------------------------------
 for(i in names(annotation)){
+  # legend_texts <- c(names(annotation_colors[[i]]), i)
+  # longest_text <- which.max(nchar(legend_texts))[1]
+  # #longest_text <- unit(1, "grobwidth", textGrob(as.character(annotation_colors[[i]])[longest_text])) #gp = do.call(gpar, gp)))
+  # #text_width <- longest_text
+  # longest_text <- legend_texts[longest_text]
+  # text_width = unit(1, "grobwidth", textGrob(longest_text))
+
   l = grep(paste0("^",i,"$"), names(annotation))
   x0 = (l - 1) * 2.1 * text_width
   y = unit(1, "npc")
@@ -91,12 +128,6 @@ for(i in names(annotation)){
   y = y - 1.5 * text_height
   x = x - 1.5 * text_width
   if(is.character(annotation[[i]]) | is.factor(annotation[[i]])){
-    # longest_text <- which.max(nchar(names(annotation_colors[[i]])))[1]
-    # #longest_text <- unit(1, "grobwidth", textGrob(as.character(annotation_colors[[i]])[longest_text])) #gp = do.call(gpar, gp)))
-    # #text_width <- longest_text
-    # longest_text <- names(annotation_colors[[i]])[longest_text]
-    # text_width = unit(1, "grobwidth", textGrob(longest_text))
-
     n = length(unique(annotation[[i]])) #length(annotation_colors[[i]])
     l = grep(paste0("^",i,"$"), names(annotation))
     yy = y - (1:n - 1) * 2 * text_height
@@ -155,3 +186,9 @@ for(i in names(annotation)){
 res = gTree(children = res)
 grid.newpage()
 grid.draw(res)
+
+
+
+grid.newpage()
+d <- draw_annotation_legend(annotation, annotation_colors = ann_colors, border_color = "black", vertical = F)
+grid.draw(d)
