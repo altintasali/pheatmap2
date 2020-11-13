@@ -891,7 +891,7 @@ identity2 = function(x, ...){
 #'     can be used for combining the heatmap with other plots
 #' }
 #'
-#' @author  Raivo Kolde <rkolde@@gmail.com>
+#' @author  Ali Altintas <altintas.ali@@gmail.com>
 #' @examples
 #' # Create test matrix
 #' test = matrix(rnorm(200), 20, 10)
